@@ -80,6 +80,7 @@ namespace DrivingSchool.Controllers
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
                     Address = model.Address,
+                    Category = model.Category,
                     RegisteredOn = DateTime.Now,
                     IsGoneOff = false
                 };
@@ -106,7 +107,9 @@ namespace DrivingSchool.Controllers
                 Name = drivingInstructor.Name,                
                 Email = drivingInstructor.Email,
                 PhoneNumber = drivingInstructor.PhoneNumber,
-                Address = drivingInstructor.Address
+                Address = drivingInstructor.Address,
+                Category =
+drivingInstructor.Category
             };
 
             return View(model);
@@ -133,6 +136,8 @@ namespace DrivingSchool.Controllers
                 drivingInstructor.Email = model.Email;
                 drivingInstructor.PhoneNumber = model.PhoneNumber;
                 drivingInstructor.Address = model.Address;
+                drivingInstructor.Category =
+model.Category;
                 await context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
