@@ -121,7 +121,7 @@ namespace DrivingSchool.Controllers
                 DrivingInstructorId = client.DrivingInstructorId
             };
 
-            ViewBag.DrivingInstructor = new SelectList(
+            ViewBag.DrivingInstructors = new SelectList(
                     await context.DrivingInstructors
                         .Where(h => !h.IsGoneOff)
                         .ToListAsync(),

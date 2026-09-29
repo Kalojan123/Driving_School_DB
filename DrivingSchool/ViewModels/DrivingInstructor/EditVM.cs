@@ -18,7 +18,6 @@ namespace DrivingSchool.ViewModels.DrivingInstructor
         [Required(ErrorMessage = "Address is required!")]
         public string Address { get; set; }
         [Required(ErrorMessage = "Category is required!")]
-        [MaxLength(4, ErrorMessage = "Maximum 4 symbols!")]
-        public Categories Category { get; set; }
+        public Categories? Category { get; set; }
     }
 }

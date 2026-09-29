@@ -80,7 +80,7 @@ namespace DrivingSchool.Controllers
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
                     Address = model.Address,
-                    Category = model.Category,
+                    Category = (Driving_School_DB.Enums.Categories)model.Category,
                     RegisteredOn = DateTime.Now,
                     IsGoneOff = false
                 };
@@ -135,7 +135,7 @@ namespace DrivingSchool.Controllers
                 drivingInstructor.Email = model.Email;
                 drivingInstructor.PhoneNumber = model.PhoneNumber;
                 drivingInstructor.Address = model.Address;
-                drivingInstructor.Category = model.Category;
+                drivingInstructor.Category = (Driving_School_DB.Enums.Categories)model.Category;
                 await context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));

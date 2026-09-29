@@ -16,7 +16,7 @@ namespace DrivingSchool.ViewModels.DrivingInstructor
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Address is required!")]
         public string Address { get; set; }
-        [Required(ErrorMessage = "Category is required!")]        
-        public Categories Category { get; set; }
+        [Required(ErrorMessage = "Category is required!")]
+        public Categories? Category { get; set; }
     }
 }

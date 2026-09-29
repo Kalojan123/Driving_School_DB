@@ -73,15 +73,15 @@
             <div class="form-group">
                 <label asp-for="DrivingInstructorId"
                        class="control-label">
-                    Hospital
+                    Driving instructor
                 </label>
 
                 <select asp-for="DrivingInstructorId"
-                        asp-items="ViewBag.DrivingInstructor"
+                        asp-items="ViewBag.DrivingInstructors"
                         class="form-control">
 
                     <option value="">
-                        Select Hospital
+                        Select driving instructor
                     </option>
                 </select>
 
@@ -90,6 +90,7 @@
                 </span>
             </div>
 
+            <br />
             <br />
 
             <button type="submit" class="btn btn-primary">Submit</button>
