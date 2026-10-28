@@ -6,22 +6,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using DrivingSchool.ViewModels.Client;
 using System.Numerics;
 using Driving_School_DB.Entities;
+using Driving_School_Core.Interfaces;
 
 namespace DrivingSchool.Controllers
 {
     public class ClientController : Controller
     {
-        private readonly DrivingSchoolDbContext context;
-
-        public ClientController(DrivingSchoolDbContext context)
+        private readonly IClientService _clientService;
+        private readonly IDrivingInstructorService _drivingInstructorService;
+        public ClientController(IClientService clientService, IDrivingInstructorService drivingInstructorService)
         {
-            this.context = context;
+            _clientService = clientService;
+            _drivingInstructorService = drivingInstructorService;
         }
+
         public async Task<IActionResult> Index()
         {
-            var clients = await context.Clients
-                .Include(d => d.DrivingInstructor)
-                .ToListAsync();
+            var clients = await _clientService.GetAllClientsAsync();
 
             var model = new List<IndexVM>();
 
@@ -41,9 +42,7 @@ namespace DrivingSchool.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var client = await context.Clients
-                .Include(d => d.DrivingInstructor)
-                .FirstOrDefaultAsync(d => d.Id == id);
+            var client = await _clientService.GetClientDetailsAsync(id);
 
             if (client == null)
             {
@@ -66,9 +65,7 @@ namespace DrivingSchool.Controllers
         public async Task<IActionResult> Create()
         {
             ViewBag.DrivingInstructors = new SelectList(
-            await context.DrivingInstructors
-         .Where(h => !h.IsGoneOff)
-         .ToListAsync(),
+            await _drivingInstructorService.GetAllDrivingInstructorsAsync(),
              "Id",
             "Name");
             return View();
@@ -88,15 +85,12 @@ namespace DrivingSchool.Controllers
                     DrivingInstructorId = model.DrivingInstructorId
                 };
 
-                context.Clients.Add(client);
-                await context.SaveChangesAsync();
+                await _clientService.AddClientAsync(client);
 
                 return RedirectToAction(nameof(Index));
             }           
             ViewBag.DrivingInstructor = new SelectList(
-    await context.DrivingInstructors
-        .Where(h => !h.IsGoneOff)
-        .ToListAsync(),
+    await _drivingInstructorService.GetAllDrivingInstructorsAsync(),
     "Id",
     "Name");
 
@@ -105,7 +99,7 @@ namespace DrivingSchool.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var client = await context.Clients.FindAsync(id);
+            var client = await _clientService.GetClientByIdAsync(id);
 
             if (client == null)
             {
@@ -122,9 +116,7 @@ namespace DrivingSchool.Controllers
             };
 
             ViewBag.DrivingInstructors = new SelectList(
-                    await context.DrivingInstructors
-                        .Where(h => !h.IsGoneOff)
-                        .ToListAsync(),
+                    await _drivingInstructorService.GetAllDrivingInstructorsAsync(),
                     "Id",
                     "Name");
 
@@ -141,7 +133,7 @@ namespace DrivingSchool.Controllers
 
             if (ModelState.IsValid)
             {
-                var client = await context.Clients.FindAsync(id);
+                var client = await _clientService.GetClientByIdAsync(id);
 
                 if (client == null)
                 {
@@ -152,14 +144,12 @@ namespace DrivingSchool.Controllers
                 client.Email = model.Email;
                 client.PhoneNumber = model.PhoneNumber;
                 client.DrivingInstructorId = model.DrivingInstructorId;
-                await context.SaveChangesAsync();
+                await _clientService.UpdateClientAsync(client);
                 return RedirectToAction(nameof(Index));
             }
 
             ViewBag.DrivingInstructor = new SelectList(
-                  await context.DrivingInstructors
-                      .Where(h => !h.IsGoneOff)
-                      .ToListAsync(),
+                  await _drivingInstructorService.GetAllDrivingInstructorsAsync(),
                   "Id",
                   "Name");
 
@@ -168,7 +158,7 @@ namespace DrivingSchool.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var client = await context.Clients.FindAsync(id);
+            var client = await _clientService.GetClientByIdAsync(id);
 
             if (client == null)
             {
@@ -189,12 +179,8 @@ namespace DrivingSchool.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var client = await context.Clients.FindAsync(id);
-            if (client != null)
-            {
-                context.Clients.Remove(client);
-                await context.SaveChangesAsync();
-            }
+            var client = await _clientService.GetClientByIdAsync(id);
+            await _clientService.DeleteClientAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

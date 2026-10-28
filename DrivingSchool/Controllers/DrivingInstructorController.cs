@@ -1,4 +1,5 @@
-﻿using Driving_School_DB;
+﻿using Driving_School_Core.Interfaces;
+using Driving_School_DB;
 using Driving_School_DB.Entities;
 using DrivingSchool.ViewModels.DrivingInstructor;
 using Microsoft.AspNetCore.Mvc;
@@ -8,20 +9,14 @@ namespace DrivingSchool.Controllers
 {
     public class DrivingInstructorController : Controller
     {
-        private readonly DrivingSchoolDbContext context;
-
-        public DrivingInstructorController(DrivingSchoolDbContext context)
+        private readonly IDrivingInstructorService _drivingInstructorService;
+        public DrivingInstructorController(IDrivingInstructorService drivingInstructorService)
         {
-            this.context = context;
+            _drivingInstructorService = drivingInstructorService;
         }
-
-
-
         public async Task<IActionResult> Index()
         {
-            var drivingInstructors = await context.DrivingInstructors
-                .Where(h => !h.IsGoneOff)
-                .ToListAsync();
+            var drivingInstructors = await _drivingInstructorService.GetAllDrivingInstructorsAsync();
 
             var model = new List<IndexVM>();
 
@@ -43,7 +38,7 @@ namespace DrivingSchool.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var drivingInstructor = await context.DrivingInstructors.FindAsync(id);
+            var drivingInstructor = await _drivingInstructorService.GetDrivingInstructorByIdAsync(id);
 
             if (drivingInstructor == null)
             {
@@ -85,9 +80,7 @@ namespace DrivingSchool.Controllers
                     IsGoneOff = false
                 };
 
-                context.DrivingInstructors.Add(drivingInstructor);
-                await context.SaveChangesAsync();
-
+                await _drivingInstructorService.AddDrivingInstructorAsync(drivingInstructor);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -96,7 +89,7 @@ namespace DrivingSchool.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var drivingInstructor = await context.DrivingInstructors.FindAsync(id);
+            var drivingInstructor = await _drivingInstructorService.GetDrivingInstructorByIdAsync(id);
             if (drivingInstructor == null)
             {
                 return NotFound();
@@ -124,7 +117,7 @@ namespace DrivingSchool.Controllers
 
             if (ModelState.IsValid)
             {
-                var drivingInstructor = await context.DrivingInstructors.FindAsync(id);
+                var drivingInstructor = await _drivingInstructorService.GetDrivingInstructorByIdAsync(id);
 
                 if (drivingInstructor == null)
                 {
@@ -136,7 +129,7 @@ namespace DrivingSchool.Controllers
                 drivingInstructor.PhoneNumber = model.PhoneNumber;
                 drivingInstructor.Address = model.Address;
                 drivingInstructor.Category = (Driving_School_DB.Enums.Categories)model.Category;
-                await context.SaveChangesAsync();
+                await _drivingInstructorService.UpdateDrivingInstructorAsync(drivingInstructor);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -146,7 +139,7 @@ namespace DrivingSchool.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var drivingInstructor = await context.DrivingInstructors.FindAsync(id);
+            var drivingInstructor = await _drivingInstructorService.GetDrivingInstructorByIdAsync(id);
 
             if (drivingInstructor == null)
             {
@@ -166,15 +159,7 @@ namespace DrivingSchool.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var drivingInstructor = await context.DrivingInstructors.FindAsync(id);
-
-            if (drivingInstructor != null)
-            {
-                drivingInstructor.IsGoneOff = true;
-
-                await context.SaveChangesAsync();
-            }
-
+            await _drivingInstructorService.DeleteDrivingInstructorAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

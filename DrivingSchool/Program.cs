@@ -1,3 +1,5 @@
+using Driving_School_Core.Interfaces;
+using Driving_School_Core.Services;
 using Driving_School_DB;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,9 @@ namespace DrivingSchool
             builder.Services.AddDbContext<DrivingSchoolDbContext>(options =>
             options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IDrivingInstructorService, DrivingInstructorService>();
+            builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<ICarService, CarService>();
 
             var app = builder.Build();
 

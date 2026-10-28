@@ -22,6 +22,45 @@ namespace Driving_School_DB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Driving_School_DB.Entities.Car", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("LicensePlate")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("Mileage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cars");
+                });
+
             modelBuilder.Entity("Driving_School_DB.Entities.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -97,6 +136,21 @@ namespace Driving_School_DB.Migrations
                     b.ToTable("DrivingInstructors");
                 });
 
+            modelBuilder.Entity("Driving_School_DB.Entities.DrivingInstructorsCars", b =>
+                {
+                    b.Property<int>("DrivingInstructorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DrivingInstructorId", "CarId");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("DrivingInstructorsCars");
+                });
+
             modelBuilder.Entity("Driving_School_DB.Entities.Client", b =>
                 {
                     b.HasOne("Driving_School_DB.Entities.DrivingInstructor", "DrivingInstructor")
@@ -108,9 +162,35 @@ namespace Driving_School_DB.Migrations
                     b.Navigation("DrivingInstructor");
                 });
 
+            modelBuilder.Entity("Driving_School_DB.Entities.DrivingInstructorsCars", b =>
+                {
+                    b.HasOne("Driving_School_DB.Entities.Car", "Car")
+                        .WithMany("DrivingInstructorsCars")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Driving_School_DB.Entities.DrivingInstructor", "DrivingInstructor")
+                        .WithMany("DrivingInstructorsCars")
+                        .HasForeignKey("DrivingInstructorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("DrivingInstructor");
+                });
+
+            modelBuilder.Entity("Driving_School_DB.Entities.Car", b =>
+                {
+                    b.Navigation("DrivingInstructorsCars");
+                });
+
             modelBuilder.Entity("Driving_School_DB.Entities.DrivingInstructor", b =>
                 {
                     b.Navigation("Clients");
+
+                    b.Navigation("DrivingInstructorsCars");
                 });
 #pragma warning restore 612, 618
         }

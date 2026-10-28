@@ -28,5 +28,6 @@ namespace Driving_School_DB.Entities
         public DateTime RegisteredOn { get; set; }
         public bool IsGoneOff { get; set; }
         public ICollection<Client> Clients { get; set; } = new List<Client>();
+        public ICollection<DrivingInstructorsCars> DrivingInstructorsCars { get; set; } = new List<DrivingInstructorsCars>();
     }
 }
