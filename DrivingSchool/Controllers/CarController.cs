@@ -70,21 +70,21 @@ namespace DrivingSchool.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateVM model)
+        public async Task<IActionResult> Create(CreateVM carVM)
         {
             if (ModelState.IsValid)
             {
                 var car = new Car
                 {
-                    Brand = model.Brand,
-                    Model = model.Model,
-                    Color = model.Color,
-                    Year = model.Year,
-                    LicensePlate = model.LicensePlate,
-                    Mileage = model.Mileage
+                    Brand = carVM.Brand,
+                    Model = carVM.Model,
+                    Color = carVM.Color,
+                    Year = carVM.Year,
+                    LicensePlate = carVM.LicensePlate,
+                    Mileage = carVM.Mileage
                 };
 
-                foreach (var drivingInstructorId in model.DrivingInstructorIds)
+                foreach (var drivingInstructorId in carVM.DrivingInstructorIds)
                 {
                     car.DrivingInstructorsCars.Add(new DrivingInstructorsCars
                     {
@@ -94,8 +94,8 @@ namespace DrivingSchool.Controllers
                 await _carService.AddCarAsync(car);
                 return RedirectToAction(nameof(Index));
             }
-            await LoadDrivingInstructors(model.DrivingInstructorIds);
-            return View(model);
+            await LoadDrivingInstructors(carVM.DrivingInstructorIds);
+            return View(carVM);
         }
         public async Task<IActionResult> Edit(int id)
         {
@@ -119,9 +119,9 @@ namespace DrivingSchool.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, EditVM model)
+        public async Task<IActionResult> Edit(int id, EditVM carVM)
         {
-            if (id != model.Id)
+            if (id != carVM.Id)
             {
                 return NotFound();
             }
@@ -135,16 +135,16 @@ namespace DrivingSchool.Controllers
                     return NotFound();
                 }
 
-                car.Brand = model.Brand;
-                car.Model = model.Model;
-                car.Color = model.Color;
-                car.Year = model.Year;
-                car.LicensePlate = model.LicensePlate;
-                car.Mileage = model.Mileage;
+                car.Brand = carVM.Brand;
+                car.Model = carVM.Model;
+                car.Color = carVM.Color;
+                car.Year = carVM.Year;
+                car.LicensePlate = carVM.LicensePlate;
+                car.Mileage = carVM.Mileage;
 
                 car.DrivingInstructorsCars.Clear();
 
-                foreach (var drivingInstructorId in model.DrivingInstructorIds)
+                foreach (var drivingInstructorId in carVM.DrivingInstructorIds)
                 {
                     car.DrivingInstructorsCars.Add(new DrivingInstructorsCars
                     {
@@ -153,12 +153,12 @@ namespace DrivingSchool.Controllers
                     });
                 }
 
-                await _carService.UpdateCarAsync(car, model.DrivingInstructorIds);
+                await _carService.UpdateCarAsync(car, carVM.DrivingInstructorIds);
                 return RedirectToAction(nameof(Index));
             }
 
-            await LoadDrivingInstructors(model.DrivingInstructorIds);
-            return View(model);
+            await LoadDrivingInstructors(carVM.DrivingInstructorIds);
+            return View(carVM);
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -174,7 +174,8 @@ namespace DrivingSchool.Controllers
             {
                 Id = car.Id,
                 Brand = car.Brand,
-                Model = car.Model
+                Model = car.Model,
+                LicensePlate = car.LicensePlate
             };
 
             return View(model);
