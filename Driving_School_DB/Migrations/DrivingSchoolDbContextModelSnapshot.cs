@@ -59,6 +59,28 @@ namespace Driving_School_DB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cars");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Brand = "Toyota",
+                            Color = "Red",
+                            LicensePlate = "ABC123",
+                            Mileage = 15000,
+                            Model = "Corolla",
+                            Year = 2020
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Brand = "Honda",
+                            Color = "Blue",
+                            LicensePlate = "XYZ789",
+                            Mileage = 20000,
+                            Model = "Civic",
+                            Year = 2019
+                        });
                 });
 
             modelBuilder.Entity("Driving_School_DB.Entities.Client", b =>
@@ -95,6 +117,26 @@ namespace Driving_School_DB.Migrations
                     b.HasIndex("DrivingInstructorId");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DrivingInstructorId = 1,
+                            Email = "email@gmail.com",
+                            FirstName = "Alice",
+                            LastName = "Johnson",
+                            PhoneNumber = "1234567890"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DrivingInstructorId = 2,
+                            Email = "mail@gmail.com",
+                            FirstName = "Bob",
+                            LastName = "Smith",
+                            PhoneNumber = "1324657890"
+                        });
                 });
 
             modelBuilder.Entity("Driving_School_DB.Entities.DrivingInstructor", b =>
@@ -134,6 +176,30 @@ namespace Driving_School_DB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DrivingInstructors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "123 Main St",
+                            Category = 5,
+                            Email = "email@mail.com",
+                            IsGoneOff = false,
+                            Name = "John Doe",
+                            PhoneNumber = "1234567890",
+                            RegisteredOn = new DateTime(2026, 11, 3, 10, 29, 24, 222, DateTimeKind.Local).AddTicks(6377)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "456 Elm St",
+                            Category = 4,
+                            Email = "mail@email.com",
+                            IsGoneOff = false,
+                            Name = "Jane Smith",
+                            PhoneNumber = "0987654321",
+                            RegisteredOn = new DateTime(2026, 11, 3, 10, 29, 24, 222, DateTimeKind.Local).AddTicks(6418)
+                        });
                 });
 
             modelBuilder.Entity("Driving_School_DB.Entities.DrivingInstructorsCars", b =>
@@ -149,6 +215,18 @@ namespace Driving_School_DB.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("DrivingInstructorsCars");
+
+                    b.HasData(
+                        new
+                        {
+                            DrivingInstructorId = 1,
+                            CarId = 1
+                        },
+                        new
+                        {
+                            DrivingInstructorId = 2,
+                            CarId = 2
+                        });
                 });
 
             modelBuilder.Entity("Driving_School_DB.Entities.Client", b =>
