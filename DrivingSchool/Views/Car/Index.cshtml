@@ -10,6 +10,70 @@
     <a asp-action="Create">Create new car</a>
 </p>
 
+<form asp-controller="Car" asp-action="Index" method="get">
+
+    <div class="row mb-3">
+
+        <div class="col-md-2">
+            <label class="form-label">Brand</label>
+            <input type="text"
+                   name="brand"
+                   value="@ViewBag.Brand"
+                   class="form-control"
+                   placeholder="Search by brand..." />
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Model</label>
+            <input type="text"
+                   name="model"
+                   value="@ViewBag.Model"
+                   class="form-control"
+                   placeholder="Search by model..." />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Minimum Year</label>
+            <input type="number"
+                   name="minYear"
+                   value="@ViewBag.MinYear"
+                   min="1885"
+                   max="2026"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Sort By</label>
+
+            <select name="sortOrder" class="form-control">
+                <option value="brand_asc"
+                        selected="@(ViewBag.SortOrder == "brand_asc")">
+                    Brand A-Z
+                </option>
+                <option value="brand_desc"
+                        selected="@(ViewBag.SortOrder == "brand_desc")">
+                    Brand Z-A
+                </option>
+                <option value="year_asc"
+                        selected="@(ViewBag.SortOrder == "year_asc")">
+                    Year Ascending
+                </option>
+                <option value="year_desc"
+                        selected="@(ViewBag.SortOrder == "year_desc")">
+                    Year Descending
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+        </div>
+
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>

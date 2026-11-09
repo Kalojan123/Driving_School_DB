@@ -27,13 +27,13 @@ namespace DrivingSchool.Controllers
             });
             ViewBag.DrivingInstructors = new MultiSelectList(drivingInstructors, "Id", "FullName", selectedDrivingInstructors);
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? brand = null, string? model = null, int? minYear = null, string? sortOrder = null)
         {
-            var cars = await _carService.GetAllCarsAsync();
-            var model = new List<IndexVM>();
+            var cars = await _carService.GetAllCarsAsync(brand, model, minYear, sortOrder);
+            var _model = new List<IndexVM>();
             foreach (var car in cars)
             {
-                model.Add(new IndexVM
+                _model.Add(new IndexVM
                 {
                     Id = car.Id,
                     Brand = car.Brand,
@@ -42,7 +42,11 @@ namespace DrivingSchool.Controllers
                     DrivingInstructorName = string.Join(", ", car.DrivingInstructorsCars.Select(dc => dc.DrivingInstructor.Name))
                 });
             }
-            return View(model);
+            ViewBag.Brand = brand;
+            ViewBag.Model = model;
+            ViewBag.MinYear = minYear;
+            ViewBag.SortOrder = sortOrder;
+            return View(_model);
         }
         public async Task<IActionResult> Details(int id)
         {

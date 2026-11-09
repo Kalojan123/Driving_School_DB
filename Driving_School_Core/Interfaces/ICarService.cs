@@ -9,7 +9,7 @@ namespace Driving_School_Core.Interfaces
 {
     public interface ICarService
     {
-        Task<List<Car>> GetAllCarsAsync();
+        Task<List<Car>> GetAllCarsAsync(string? brand = null, string? model = null, int? minYear = null, string? sortOrder = null);
         Task<Car?> GetCarByIdAsync(int id);
         Task<Car?> GetCarWithDrivingInstructorsAsync(int id);
         Task AddCarAsync(Car car);

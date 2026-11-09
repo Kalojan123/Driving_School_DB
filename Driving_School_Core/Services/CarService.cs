@@ -34,9 +34,40 @@ namespace Driving_School_Core.Services
             }
         }
 
-        public async Task<List<Car>> GetAllCarsAsync()
+        public async Task<List<Car>> GetAllCarsAsync(string? brand = null, string? model = null, int? minYear = null, string? sortOrder = null)
         {
-            return await _context.Cars.Include(c => c.DrivingInstructorsCars).ThenInclude(dc => dc.DrivingInstructor).ToListAsync();
+            var query = _context.Cars.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(brand))
+            {
+                query = query.Where(c => c.Brand.Contains(brand));
+            }
+            if (!string.IsNullOrWhiteSpace(model))
+            {
+                query = query.Where(c => c.Model.Contains(model));
+            }
+            if (minYear.HasValue)
+            {
+                query = query.Where(c => c.Year >= minYear.Value);
+            }
+            switch (sortOrder)
+            {
+                case "brand_asc":
+                    query = query.OrderBy(c => c.Brand);
+                    break;
+                case "brand_desc":
+                    query = query.OrderByDescending(c => c.Brand);
+                    break;
+                case "year_asc":
+                    query = query.OrderBy(c => c.Year);
+                    break;
+                case "year_desc":
+                    query = query.OrderByDescending(c => c.Year);
+                    break;
+                default:
+                    query = query.OrderBy(c => c.Brand);
+                    break;
+            }
+            return await query.Include(c => c.DrivingInstructorsCars).ThenInclude(dc => dc.DrivingInstructor).ToListAsync();
         }
 
         public async Task<Car?> GetCarByIdAsync(int id)
