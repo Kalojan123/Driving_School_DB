@@ -10,7 +10,7 @@ namespace Driving_School_Core.Interfaces
 {
     public interface IClientService
     {
-        Task<List<Client>> GetAllClientsAsync();
+        Task<List<Client>> GetAllClientsAsync(string? search = null, string? drivingInstructor = null, string? sortOrder = null);
         Task<Client?> GetClientByIdAsync(int id);
         Task<Client?> GetClientDetailsAsync(int id);
         Task AddClientAsync(Client client);

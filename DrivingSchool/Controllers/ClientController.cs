@@ -20,9 +20,9 @@ namespace DrivingSchool.Controllers
             _drivingInstructorService = drivingInstructorService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, string? drivingInstructor, string? sortOrder)
         {
-            var clients = await _clientService.GetAllClientsAsync();
+            var clients = await _clientService.GetAllClientsAsync(search, drivingInstructor, sortOrder);
 
             var model = new List<IndexVM>();
 
@@ -38,6 +38,19 @@ namespace DrivingSchool.Controllers
             }
 
             return View(model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetFilteredClients(string? search, string? drivingInstructor, string? sortOrder)
+        {
+            var clients = await _clientService.GetAllClientsAsync(search, drivingInstructor, sortOrder);
+            var result = clients.Select(d => new
+            {
+                id = d.Id,
+                firstName = d.FirstName,
+                lastName = d.LastName,
+                drivingInstructor = d.DrivingInstructor.Name
+            }).ToList();
+            return Json(result);
         }
 
         public async Task<IActionResult> Details(int id)
