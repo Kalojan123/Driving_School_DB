@@ -10,6 +10,40 @@
     <a asp-action="Create">Create new client</a>
 </p>
 
+<div class="row mb-3">
+
+    <div class="col-md-3">
+        <label>Client Name</label>
+        <input type="text" id="search"
+               class="form-control"
+               placeholder="Search by name..." />
+    </div>
+
+    <div class="col-md-3">
+        <label>Driving Instructor</label>
+        <input type="text" id="drivingInstructor"
+               class="form-control"
+               placeholder="Enter driving instructor..." />
+    </div>
+
+    <div class="col-md-3">
+        <label>Sort By</label>
+        <select id="sortOrder" class="form-control">
+            <option value="name_asc">Name A-Z</option>
+            <option value="name_desc">Name Z-A</option>
+            <option value="drivingInstructor">Driving Instructor A-Z</option>
+        </select>
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+        <button type="button" id="clearFilters"
+                class="btn btn-secondary">
+            Clear Filters
+        </button>
+    </div>
+
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -26,7 +60,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody id="clientsTable">
         @foreach (var client in Model)
         {
             <tr>
@@ -59,3 +93,9 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script src="/js/ClientFilter.js"
+            asp-append-version="true">
+    </script>
+}

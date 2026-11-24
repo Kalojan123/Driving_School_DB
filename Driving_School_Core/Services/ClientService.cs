@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,9 +34,33 @@ namespace Driving_School_Core.Services
             }
         }
 
-        public async Task<List<Client>> GetAllClientsAsync()
+        public async Task<List<Client>> GetAllClientsAsync(string? search = null, string? drivingInstructor = null, string? sortOrder = null)
         {
-            return await _context.Clients.Include(d => d.DrivingInstructor).ToListAsync();
+            IQueryable<Client> queryable = _context.Clients.Include(d => d.DrivingInstructor);
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                queryable = queryable.Where(d => d.FirstName.Contains(search) || d.LastName.Contains(search));
+            }
+            if (!string.IsNullOrWhiteSpace(drivingInstructor))
+            {
+                queryable = queryable.Where(d => d.DrivingInstructor.Name.Contains(drivingInstructor));
+            }
+            switch (sortOrder)
+            {
+                case "name_asc":
+                    queryable = queryable.OrderBy(d => d.FirstName).ThenBy(d => d.LastName);
+                    break;
+                case "name_desc":
+                    queryable = queryable.OrderByDescending(d => d.FirstName).ThenByDescending(d => d.LastName);
+                    break;
+                case "drivingInstructor":
+                    queryable = queryable.OrderBy(d => d.DrivingInstructor.Name).ThenBy(d => d.FirstName);
+                    break;
+                default:
+                    queryable = queryable.OrderBy(d => d.FirstName).ThenBy(d => d.LastName);
+                    break;
+            }
+            return await queryable.ToListAsync();
         }
 
         public async Task<Client?> GetClientByIdAsync(int id)
