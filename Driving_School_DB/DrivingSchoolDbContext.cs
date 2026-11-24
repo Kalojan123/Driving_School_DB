@@ -21,9 +21,6 @@ namespace Driving_School_DB
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<DrivingInstructorsCars>().HasKey(dc => new { dc.DrivingInstructorId, dc.CarId });
-            modelBuilder.Entity<DrivingInstructorsCars>().HasOne(dc => dc.DrivingInstructor).WithMany(d => d.DrivingInstructorsCars).HasForeignKey(dc => dc.DrivingInstructorId).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<DrivingInstructorsCars>().HasOne(dc => dc.Car).WithMany(c => c.DrivingInstructorsCars).HasForeignKey(dc => dc.CarId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.ApplyConfiguration(new DrivingInstructorConfiguration());
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
             modelBuilder.ApplyConfiguration(new CarConfiguration());

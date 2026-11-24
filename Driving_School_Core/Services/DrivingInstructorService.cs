@@ -26,15 +26,21 @@ namespace Driving_School_Core.Services
         public async Task DeleteDrivingInstructorAsync(int id)
         {
             var drivingInstructor = await _context.DrivingInstructors.Include(d => d.Clients).Include(d => d.DrivingInstructorsCars).ThenInclude(d => d.Car).FirstOrDefaultAsync(d => d.Id == id);
-            if (drivingInstructor != null)
+            if (drivingInstructor == null)
             {
-                drivingInstructor.IsGoneOff = false;
-                if (drivingInstructor.DrivingInstructorsCars.Any())
-                {
-                    _context.DrivingInstructorsCars.RemoveRange(drivingInstructor.DrivingInstructorsCars);
-                }
-                await _context.SaveChangesAsync();
+                return;
             }
+            bool hasClients = await _context.Clients.AnyAsync(d => d.DrivingInstructorId == id);
+            if (hasClients)
+            {
+                throw new InvalidOperationException("The driving instructor cannot be deleted, because there are clients who are at lessons with this driving instructor.");
+            }
+            drivingInstructor.IsGoneOff = true;
+            if (drivingInstructor.DrivingInstructorsCars.Any())
+            {
+                _context.DrivingInstructorsCars.RemoveRange(drivingInstructor.DrivingInstructorsCars);
+            }
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<DrivingInstructor>> GetAllDrivingInstructorsAsync()

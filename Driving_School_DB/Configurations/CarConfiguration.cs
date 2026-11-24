@@ -14,6 +14,12 @@ namespace Driving_School_DB.Configurations
     {
         public void Configure(EntityTypeBuilder<Car> builder)
         {
+            builder.Property(c => c.Brand).IsRequired().HasMaxLength(50);
+            builder.Property(c => c.Model).IsRequired().HasMaxLength(50);
+            builder.Property(c => c.Color).IsRequired().HasMaxLength(20);
+            builder.Property(c => c.Year).IsRequired();
+            builder.Property(c => c.LicensePlate).IsRequired().HasMaxLength(10);
+            builder.Property(c => c.Mileage).IsRequired();
             builder.HasData(
                 new Car
                 {

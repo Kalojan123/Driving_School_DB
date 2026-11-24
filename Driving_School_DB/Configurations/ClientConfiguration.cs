@@ -14,6 +14,11 @@ namespace Driving_School_DB.Configurations
     {
         public void Configure(EntityTypeBuilder<Client> builder)
         {
+            builder.Property(c => c.FirstName).IsRequired().HasMaxLength(15);
+            builder.Property(c => c.LastName).IsRequired().HasMaxLength(15);
+            builder.Property(c => c.Email).IsRequired();
+            builder.Property(c => c.PhoneNumber).IsRequired();
+            builder.HasOne(d => d.DrivingInstructor).WithMany(h => h.Clients).HasForeignKey(h => h.DrivingInstructorId).OnDelete(DeleteBehavior.Restrict);
             builder.HasData(
                 new Client
                 {

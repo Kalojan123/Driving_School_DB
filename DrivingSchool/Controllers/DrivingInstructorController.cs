@@ -159,8 +159,16 @@ namespace DrivingSchool.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _drivingInstructorService.DeleteDrivingInstructorAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _drivingInstructorService.DeleteDrivingInstructorAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

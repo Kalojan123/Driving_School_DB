@@ -187,7 +187,7 @@ namespace Driving_School_DB.Migrations
                             IsGoneOff = false,
                             Name = "John Doe",
                             PhoneNumber = "1234567890",
-                            RegisteredOn = new DateTime(2026, 11, 3, 10, 29, 24, 222, DateTimeKind.Local).AddTicks(6377)
+                            RegisteredOn = new DateTime(2026, 11, 24, 11, 31, 2, 229, DateTimeKind.Local).AddTicks(2058)
                         },
                         new
                         {
@@ -198,7 +198,7 @@ namespace Driving_School_DB.Migrations
                             IsGoneOff = false,
                             Name = "Jane Smith",
                             PhoneNumber = "0987654321",
-                            RegisteredOn = new DateTime(2026, 11, 3, 10, 29, 24, 222, DateTimeKind.Local).AddTicks(6418)
+                            RegisteredOn = new DateTime(2026, 11, 24, 11, 31, 2, 229, DateTimeKind.Local).AddTicks(2113)
                         });
                 });
 
@@ -234,7 +234,7 @@ namespace Driving_School_DB.Migrations
                     b.HasOne("Driving_School_DB.Entities.DrivingInstructor", "DrivingInstructor")
                         .WithMany("Clients")
                         .HasForeignKey("DrivingInstructorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DrivingInstructor");

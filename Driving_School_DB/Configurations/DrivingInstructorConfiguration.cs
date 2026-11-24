@@ -14,6 +14,11 @@ namespace Driving_School_DB.Configurations
     {
         public void Configure(EntityTypeBuilder<DrivingInstructor> builder)
         {
+            builder.Property(d => d.Name).IsRequired().HasMaxLength(30);
+            builder.Property(d => d.Email).IsRequired();
+            builder.Property(d => d.PhoneNumber).IsRequired();
+            builder.Property(d => d.Address).IsRequired();
+            builder.Property(d => d.Category).IsRequired();
             builder.HasData(
                 new DrivingInstructor{
                     Id = 1,

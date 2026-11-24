@@ -14,6 +14,9 @@ namespace Driving_School_DB.Configurations
     {
         public void Configure(EntityTypeBuilder<DrivingInstructorsCars> builder)
         {
+            builder.HasKey(dc => new { dc.DrivingInstructorId, dc.CarId });
+            builder.HasOne(dc => dc.DrivingInstructor).WithMany(d => d.DrivingInstructorsCars).HasForeignKey(dc => dc.DrivingInstructorId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(dp => dp.Car).WithMany(d => d.DrivingInstructorsCars).HasForeignKey(dp => dp.CarId).OnDelete(DeleteBehavior.Cascade);
             builder.HasData(
                 new DrivingInstructorsCars
                 {
