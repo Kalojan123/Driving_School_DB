@@ -187,7 +187,11 @@ namespace Driving_School_DB.Migrations
                             IsGoneOff = false,
                             Name = "John Doe",
                             PhoneNumber = "1234567890",
+<<<<<<< HEAD
                             RegisteredOn = new DateTime(2026, 11, 24, 11, 31, 2, 229, DateTimeKind.Local).AddTicks(2058)
+=======
+                            RegisteredOn = new DateTime(2026, 11, 19, 22, 11, 24, 86, DateTimeKind.Local).AddTicks(652)
+>>>>>>> a2108aa5a01564de1c3848fc543941fd9392060f
                         },
                         new
                         {
@@ -198,7 +202,11 @@ namespace Driving_School_DB.Migrations
                             IsGoneOff = false,
                             Name = "Jane Smith",
                             PhoneNumber = "0987654321",
+<<<<<<< HEAD
                             RegisteredOn = new DateTime(2026, 11, 24, 11, 31, 2, 229, DateTimeKind.Local).AddTicks(2113)
+=======
+                            RegisteredOn = new DateTime(2026, 11, 19, 22, 11, 24, 86, DateTimeKind.Local).AddTicks(723)
+>>>>>>> a2108aa5a01564de1c3848fc543941fd9392060f
                         });
                 });
 
